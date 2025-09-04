@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bookworm-vnc:
+    build: .
+    ports:
+      - "5901:5901"  # VNC port
+      - "6080:6080"  # noVNC web interface port
+    environment:
+      - VNC_RESOLUTION=1920x1080
+      - VNC_COL_DEPTH=24
+    volumes:
+      - ./workspace:/home/developer/workspace
+    container_name: bookworm-vnc-container
+    restart: unless-stopped
