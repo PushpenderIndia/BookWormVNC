@@ -76,3 +76,40 @@ The `./workspace` directory is mounted to `/home/developer/workspace` inside the
 - `VNC_COL_DEPTH`: Color depth (default: 24)
 - `VNC_PORT`: VNC server port (default: 5901)
 - `NO_VNC_PORT`: noVNC web port (default: 6080)
+
+## Docker Hub Images
+
+Pre-built multi-architecture images are available on Docker Hub:
+
+```bash
+# Pull the latest image
+docker pull pushpenderindia/bookworm-vnc:latest
+
+# Run with Docker Hub image
+docker run -d \
+  --name bookworm-vnc \
+  -p 5901:5901 \
+  -p 6080:6080 \
+  -v $(pwd)/workspace:/home/developer/workspace \
+  pushpenderindia/bookworm-vnc:latest
+```
+
+**Supported Architectures:**
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/AArch64)
+
+## Development
+
+### Setting up GitHub Actions (for maintainers)
+
+To enable automated Docker builds, add these secrets to your GitHub repository:
+
+1. Go to your repository → Settings → Secrets and variables → Actions
+2. Add the following repository secrets:
+   - `DOCKER_USERNAME`: Your Docker Hub username
+   - `DOCKER_PASSWORD`: Your Docker Hub password or access token
+
+The workflow will automatically:
+- Build multi-architecture images on every push to main
+- Push images to Docker Hub with appropriate tags
+- Update the Docker Hub repository description
