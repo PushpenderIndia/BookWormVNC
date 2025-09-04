@@ -47,7 +47,7 @@ docker run -d \
 ## Access
 
 ### noVNC Web Interface
-Open your browser and go to: `http://localhost:6080`
+Open your browser and go to: `http://localhost:6080/vnc.html`
 
 ### VNC Client
 - **Host**: `localhost`
