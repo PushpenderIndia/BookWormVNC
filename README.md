@@ -4,54 +4,57 @@
 
 A Docker container based on Debian Bookworm with VNC server, noVNC web interface, VSCode, and Chromium browser.
 
-## Features
+## Quick Start with Pre-built Images
 
-- **Base**: Debian Bookworm (slim)
-- **Desktop Environment**: XFCE4
-- **VNC Server**: TightVNC
-- **Web Interface**: noVNC (browser-based VNC client)
-- **Applications**:
-  - Visual Studio Code
-  - Chromium browser
-  - Firefox ESR
-  - Git, Vim, Nano
+### Using Docker Hub Images (Recommended)
 
-## System Requirements
-
-**Recommended Memory**: 1GB RAM minimum
-- VSCode requires 650-700MB RAM
-- Firefox browser uses 80-150MB RAM
-- Additional memory needed for XFCE desktop and other processes
-
-## Build and Run
-
-### Using Docker Compose (Recommended)
+Pre-built multi-architecture images are available on Docker Hub:
 
 ```bash
-docker-compose up -d --build
-```
-
-### Using Docker directly
-
-```bash
-# Build the image
-docker build -t bookworm-vnc .
-
-# Run the container
+# Pull and run the latest image
 docker run -d \
   --name bookworm-vnc \
   -p 5901:5901 \
   -p 6080:6080 \
   -v $(pwd)/workspace:/home/developer/workspace \
-  bookworm-vnc
+  pushpenderindia/bookworm-vnc:latest
 ```
 
-## Access
+**Supported Architectures:**
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/AArch64)
 
-### noVNC Web Interface
+### Using Docker Compose with Pre-built Image
+
+Create a `docker-compose.yml` file:
+
+```yaml
+services:
+  bookworm-vnc:
+    image: pushpenderindia/bookworm-vnc:latest
+    ports:
+      - "5901:5901"  # VNC port
+      - "6080:6080"  # noVNC web interface port
+    environment:
+      - VNC_RESOLUTION=1920x1080
+      - VNC_COL_DEPTH=24
+    volumes:
+      - ./workspace:/home/developer/workspace
+    container_name: bookworm-vnc-container
+    restart: unless-stopped
+```
+
+Then run:
+```bash
+docker-compose up -d
+```
+
+## Access Your Desktop
+
+### noVNC Web Interface (Browser Access)
 Open your browser and go to: `http://localhost:6080/vnc.html`
 
-### VNC Client
+### VNC Client (Desktop Application)
 - **Host**: `localhost`
 - **Port**: `5901`
 - **Password**: `developer`
@@ -60,6 +63,25 @@ Open your browser and go to: `http://localhost:6080/vnc.html`
 
 - **Username**: `developer`
 - **Password**: `developer`
+
+## System Requirements
+
+**Recommended Memory**: 1GB RAM minimum
+- VSCode requires 650-700MB RAM
+- Firefox browser uses 80-150MB RAM
+- Additional memory needed for XFCE desktop and other processes
+
+## Features
+
+- **Base**: Debian Bookworm (slim)
+- **Desktop Environment**: XFCE4
+- **VNC Server**: TightVNC
+- **Web Interface**: noVNC (browser-based VNC client)
+- **Applications**:
+  - Visual Studio Code (with --no-sandbox configured)
+  - Chromium browser
+  - Firefox ESR
+  - Git, Vim, Nano
 
 ## Ports
 
@@ -77,26 +99,35 @@ The `./workspace` directory is mounted to `/home/developer/workspace` inside the
 - `VNC_PORT`: VNC server port (default: 5901)
 - `NO_VNC_PORT`: noVNC web port (default: 6080)
 
-## Docker Hub Images
+## Custom Build Setup
 
-Pre-built multi-architecture images are available on Docker Hub:
+If you want to build the image yourself:
+
+### Using Docker Compose
 
 ```bash
-# Pull the latest image
-docker pull pushpenderindia/bookworm-vnc:latest
+git clone https://github.com/PushpenderIndia/BookWormVNC.git
+cd BookWormVNC
+docker-compose up -d --build
+```
 
-# Run with Docker Hub image
+### Using Docker directly
+
+```bash
+git clone https://github.com/PushpenderIndia/BookWormVNC.git
+cd BookWormVNC
+
+# Build the image
+docker build -t bookworm-vnc .
+
+# Run the container
 docker run -d \
   --name bookworm-vnc \
   -p 5901:5901 \
   -p 6080:6080 \
   -v $(pwd)/workspace:/home/developer/workspace \
-  pushpenderindia/bookworm-vnc:latest
+  bookworm-vnc
 ```
-
-**Supported Architectures:**
-- `linux/amd64` (x86_64)
-- `linux/arm64` (ARM64/AArch64)
 
 ## Development
 
