@@ -1,5 +1,7 @@
 # BookWorm VNC Container
 
+![BookWorm VNC](bookworm.png)
+
 A Docker container based on Debian Bookworm with VNC server, noVNC web interface, VSCode, and Chromium browser.
 
 ## Features
