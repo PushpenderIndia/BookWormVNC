@@ -143,4 +143,4 @@ To enable automated Docker builds, add these secrets to your GitHub repository:
 The workflow will automatically:
 - Build multi-architecture images on every push to main
 - Push images to Docker Hub with appropriate tags
-- Update the Docker Hub repository description
+- Update the Docker Hub repository description.
